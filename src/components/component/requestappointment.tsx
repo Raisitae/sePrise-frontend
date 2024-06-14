@@ -1,40 +1,56 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/xPh8yEcrXGq
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-
-import { Button } from "@/components/ui/button";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import {
-  MobileTimePicker,
-  MobileTimePickerProps,
-} from "@mui/x-date-pickers/MobileTimePicker";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import dayjs from "dayjs";
 
-import Link from "next/link";
+import getMedicos from "@/utils/getMedicos";
+
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  TextField,
+  Button,
+  Stack,
+} from "@mui/material";
+import { NextApiResponse } from "next";
 
 export default function RequestAppointment() {
+  const [medicos, setMedicos] = useState<any[]>([]);
+
+  const fetchMedicos = async () => {
+    try {
+      const result = await getMedicos(); // Assuming getMedicos() returns a Promise<string[]>
+      setMedicos(result);
+    } catch (error) {
+      console.error("Error fetching medicos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedicos(); // Fetch data when the component mounts (empty dependency array)
+  }, []); // Empty dependency array ensures useEffect runs only once after initial render
+
+  console.log(medicos); // This will log the medicos array after it has been updated
+
   const [requestAppointmentData, setRequestAppointmentData] = useState({
     firstName: "",
     lastName: "",
     phone: "",
-    ssn: "",
+    dni: "",
     doctor: "",
     date: "",
     time: "",
   });
 
-  const handleRequestAppointmentChange = (field, value) => {
+  const handleRequestAppointmentChange = (field: any, value: any) => {
     setRequestAppointmentData({
       ...requestAppointmentData,
       [field]: value,
@@ -46,124 +62,111 @@ export default function RequestAppointment() {
       firstName: "",
       lastName: "",
       phone: "",
-      ssn: "",
+      dni: "",
       doctor: "",
       date: "",
       time: "",
     });
+    console.log(requestAppointmentData);
   };
 
-  const [startDate, setStartDate] = useState(new Date());
-
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-gray-100 px-4 dark:bg-gray-950">
+    <div className="flex flex-col items-center justify-center py-20">
       <div className="mx-auto w-full max-w-4xl space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight mt-4">
-            Request Appointment
+            Solicitar turno
           </h1>
           <p className="mt-2 text-gray-500 dark:text-gray-400">
-            Fill out the form to request a new appointment.
+            Completa el formulario para solicitar un turno.
           </p>
         </div>
         <Card>
           <CardContent>
-            <form className="grid gap-4 py-4">
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="firstName" className="text-right">
-                  First Name
+            <FormControl className=" w-full gap-5 my-10">
+              <TextField
+                value={requestAppointmentData.firstName}
+                onChange={(e) =>
+                  handleRequestAppointmentChange("firstName", e.target.value)
+                }
+                label={"Nombre"}></TextField>
+              <TextField
+                value={requestAppointmentData.lastName}
+                onChange={(e) =>
+                  handleRequestAppointmentChange("lastName", e.target.value)
+                }
+                label={"Apellido"}></TextField>
+              <TextField
+                value={requestAppointmentData.phone}
+                type="number"
+                onChange={(e) =>
+                  handleRequestAppointmentChange("phone", e.target.value)
+                }
+                label={"Número de Teléfono"}></TextField>
+              <TextField
+                value={requestAppointmentData.dni}
+                type="number"
+                onChange={(e) =>
+                  handleRequestAppointmentChange("dni", e.target.value)
+                }
+                label={"DNI"}></TextField>
+              <>
+                <Label htmlFor="doctor" className="text-left">
+                  Médico
                 </Label>
-                <Input
-                  id="firstName"
-                  value={requestAppointmentData.firstName}
+                <Select
+                  labelId="doctor-label"
+                  value={requestAppointmentData.doctor} // Selected doctor's dni
                   onChange={(e) =>
-                    handleRequestAppointmentChange("firstName", e.target.value)
-                  }
-                  className="col-span-3 w-full"
-                />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="lastName" className="text-right">
-                  Last Name
-                </Label>
-                <Input
-                  id="lastName"
-                  value={requestAppointmentData.lastName}
-                  onChange={(e) =>
-                    handleRequestAppointmentChange("lastName", e.target.value)
-                  }
-                  className="col-span-3 w-full"
-                />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="phone" className="text-right">
-                  Phone
-                </Label>
-                <Input
-                  id="phone"
-                  value={requestAppointmentData.phone}
-                  onChange={(e) =>
-                    handleRequestAppointmentChange("phone", e.target.value)
-                  }
-                  className="col-span-3 w-full"
-                />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="ssn" className="text-right">
-                  SSN
-                </Label>
-                <Input
-                  id="ssn"
-                  value={requestAppointmentData.ssn}
-                  onChange={(e) =>
-                    handleRequestAppointmentChange("ssn", e.target.value)
-                  }
-                  className="col-span-3 w-full"
-                />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="doctor" className="text-right">
-                  Doctor
-                </Label>
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="date" className="text-right">
-                  Date
+                    handleRequestAppointmentChange("doctor", e.target.value)
+                  }>
+                  {medicos.length !== 0 ? (
+                    medicos.map((medico, index) => (
+                      <MenuItem key={medico.id} value={medico.dni}>
+                        {`${medico.especialidad} - ${medico.apellido}, ${medico.nombre}`}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No hay médicos disponibles</MenuItem>
+                  )}
+                </Select>
+              </>
+              <div className="flex flex-col align-center justify-center">
+                <Label htmlFor="date" className="text-left mb-5">
+                  Fecha
                 </Label>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <MobileDatePicker />
+                  <MobileDatePicker className="" />
                 </LocalizationProvider>
               </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="time" className="text-right">
-                  Time
+              <div className="flex flex-col align-center justify-center">
+                <Label htmlFor="time" className="text-left mb-5">
+                  Hora
                 </Label>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileTimePicker
                     defaultValue={dayjs("2022-04-17T15:30")}
-                    className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300"
+                    className=""
                   />
                 </LocalizationProvider>
               </div>
-            </form>
+              <Stack spacing={2} direction="row" justifyContent="flex-end">
+                <Button
+                  onClick={handleRequestAppointmentSubmit}
+                  variant="contained"
+                  size="large">
+                  Enviar
+                </Button>
+                <Button
+                  onClick={handleRequestAppointmentSubmit}
+                  variant="outlined"
+                  size="large"
+                  href="/home">
+                  Cancelar
+                </Button>
+              </Stack>
+            </FormControl>
           </CardContent>
-          <CardFooter className="flex justify-end gap-4">
-            <Button
-              onClick={handleRequestAppointmentSubmit}
-              className="bg-gray-900 text-gray-50 hover:bg-gray-900/90 focus-visible:ring-gray-950 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-              Submit
-            </Button>
-            <Link
-              href="#"
-              className="inline-flex items-center justify-center"
-              prefetch={false}>
-              <Link
-                href="/home"
-                className="text-gray-900 hover:bg-gray-100 dark:text-gray-50 dark:hover:bg-gray-800">
-                Cancel
-              </Link>
-            </Link>
-          </CardFooter>
         </Card>
       </div>
     </div>
