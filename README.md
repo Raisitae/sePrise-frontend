@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Clinica SePrise Frontend
 
-## Getting Started
+Repositorio frontend del sistema integral de gestión de turnos para laboratorio y hospital de la Clinica SePrise.
 
-First, run the development server:
+## Vistas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+La app cuenta con un total de X vistas:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `/` -> Vista de inicio de sesión.
+- `/home` -> Vista principal, a partir de allí se puede navegar a la gestión de turnos del laboratorio o del hospital.
+- `/doctor` -> Gestión del sistema del hospital. A partir de esta podemos navegar a:
+  - `/apmtformdoc` -> Formulario desde el que se solicitan turnos. Se ingresa la información del paciente, si el paciente no existe en la DB, es creado.
+  - `/apmtmanagedoc` -> Vista desde la cual se confirman o cancelan los turnos del paciente ingresado a partir de su dni (id).
+  - `/doc` -> Vista desde la cual los doctores pueden administrar su agenda del día (turnos para ese día), tras ingresar su dni. En esta vista pueden cambiar el estado de los turnos (de confirmado -> en curso -> finalizado)
+- `/laboratory` -> Gestión del sistema del laboratorio. A partir de esta podemos navegar a:
+  - `/apmtformlab` -> Formulario desde el que se solicitan turnos. Se ingresa la información del paciente, si el paciente no existe en la DB, es creado.
+  - `/apmtmanagelab` -> Vista desde la cual se confirman o cancelan los turnos del paciente ingresado a partir de su dni (id).
+  - `/lab` -> Vista desde la cual los tecnicos pueden administrar su agenda del día (turnos para ese día). En esta vista pueden cambiar el estado de los turnos (de confirmado -> en curso -> finalizado)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tecnologías
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+La app se encuentra desarrollada en Next Js (typescript). También usa las librerías de axios para el manejo de requests al backend, react-toastify para el manejo de errores y notificaciones al usuario. Las librerías de estilo utilizadas son Material UI (especialmente el timepicker y el datepicker), y tailwind.
 
-## Learn More
+## Instrucciones de Instalación
 
-To learn more about Next.js, take a look at the following resources:
+1. Clonar el repositorio:
+   ```sh
+   git clone https://github.com/tu_usuario/clinica-seprise-frontend.git
+   ```
+2. Navegar al directorio del proyecto:
+   ```sh
+   cd clinica-seprise-frontend
+   ```
+3. Instalar las dependencias:
+   ```sh
+   npm install
+   ```
+4. Ejecutar el proyecto localmente:
+   ```sh
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Frontend y DB
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+El repositorio backend se encuentra en el siguiente link:
+https://github.com/Raisitae/sePrise-backend
+El repositorio con la base de datos se encuentra en el siguiente link:
+https://github.com/Raisitae/seprise-db

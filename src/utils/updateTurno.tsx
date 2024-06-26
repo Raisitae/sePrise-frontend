@@ -15,7 +15,7 @@ async function handleUpdateTurno(
   try {
     const response = await axios.patch(`${url}/turnos/${id}`, updateTurnoDto);
 
-    toast.success("Turno actualizao exitosamente", {
+    toast.success("Turno actualizado exitosamente", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
