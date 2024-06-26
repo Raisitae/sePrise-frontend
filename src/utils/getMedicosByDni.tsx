@@ -1,9 +1,9 @@
 import axios from "axios";
 import { url } from "./url";
 
-async function getData(): Promise<any> {
+async function getData(dni: number): Promise<any> {
   try {
-    const response = await axios.get(url + "/medicos", {
+    const response = await axios.get(url + `/medicos/${dni}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -15,9 +15,9 @@ async function getData(): Promise<any> {
   }
 }
 
-export default async function getMedicos(): Promise<any> {
+export default async function getMedicosByDni(dni: number): Promise<any> {
   try {
-    const response = await getData();
+    const response = await getData(dni);
     return response.data;
   } catch (error) {
     console.error("Error:", error);

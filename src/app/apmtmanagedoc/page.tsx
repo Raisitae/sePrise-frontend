@@ -1,5 +1,5 @@
 import { Searchappointment } from "@/components/component/searchappointment";
 
 export default function page() {
-  return <Searchappointment type="confirm" />;
+  return <Searchappointment type="doctor" />;
 }

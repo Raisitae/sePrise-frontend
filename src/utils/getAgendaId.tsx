@@ -1,9 +1,9 @@
 import axios from "axios";
 import { url } from "./url";
 
-async function getData(): Promise<any> {
+async function getData(id_turno: number): Promise<any> {
   try {
-    const response = await axios.get(url + "/medicos", {
+    const response = await axios.get(url + `/agendasDias/turno/${id_turno}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -15,9 +15,9 @@ async function getData(): Promise<any> {
   }
 }
 
-export default async function getMedicos(): Promise<any> {
+export default async function getAgendaId(id_turno: number): Promise<any> {
   try {
-    const response = await getData();
+    const response = await getData(id_turno);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
